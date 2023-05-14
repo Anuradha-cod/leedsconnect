@@ -17,7 +17,6 @@ const Header = () => {
       setGetWishList(getUpdatedData.filter((data) => data.isChecked === true))
     }
   }, [getUpdatedData])
-console.log("getData",getData);
   return (
     <>
       <div>

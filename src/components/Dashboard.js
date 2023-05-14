@@ -26,7 +26,6 @@ const Dashboard = () => {
       console.log(error)
     }
   }
-console.log("getAllProducts",getAllProducts);
   // pagination feature added //
   let PageSize = 10;
   const [currentPage, setCurrentPage] = useState(1);

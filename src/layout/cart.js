@@ -12,7 +12,6 @@ const CartData = ({ getData, setAnchorEl, anchorElWishList }) => {
     let subtotal = 0;
     getData?.forEach((item) => {
         subtotal = subtotal + item.producQuantity * parseInt(item.price);
-        console.log(subtotal);
     });
 
     // {/* total cart quantity */ }
@@ -31,36 +30,52 @@ const CartData = ({ getData, setAnchorEl, anchorElWishList }) => {
 
 
     return (
-        <Card className="card" style={{ position: "absolute", right: "0px", zIndex: "50", height: "400px", }}>
+        <Card className="card" style={{ position: "absolute", right: "0px", zIndex: "50", }}>
             {getData?.length ? (
-                <div style={{ marginTop: "20px", overflowY: "scroll" }}>
+                <div>
+                    <div style={{ marginTop: "20px", overflowY: "scroll", height: "350px" }}>
 
-                    {getData.map((data, index) => {
-                        return (
-                            <Card className="card" style={{ margin: "4px", }}>
-                                <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
-                                    <div>
-                                        <img style={{ width: "150px" }} src={data.image} alt="Card image cap" />
+                        {getData.map((data, index) => {
+                            return (
+                                <Card className="card" style={{ margin: "4px", }}>
+                                    <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+                                        <div>
+                                            <img style={{ width: "150px" }} src={data.image} alt="Card image cap" />
+                                        </div>
+                                        <div className="card-body">
+                                            <h6 className="card-title">{data?.name}</h6>
+                                            <p className="card-text">Price: ₹ {data.price}</p>
+                                            {anchorElWishList &&
+                                                <i className="fas fa-trash largetrash"
+                                                    style={{ color: "red", marginRight: 15, cursor: "pointer" }}
+                                                    onClick={() => {
+                                                        deleteWishListData(data.id, index)
+                                                    }} />}
+                                            <ItemButton text={'Add to Cart'}
+                                                getAllProducts={getUpdatedData}
+                                                data={data}
+                                            />
+                                        </div>
                                     </div>
-                                    <div className="card-body">
-                                        <h6 className="card-title">{data?.name}</h6>
-                                        <p className="card-text">Price: ₹ {data.price}</p>
-                                        {anchorElWishList &&
-                                            <i className="fas fa-trash largetrash"
-                                                style={{ color: "red", marginRight: 15, cursor: "pointer" }}
-                                                onClick={() => {
-                                                    deleteWishListData(data.id, index)
-                                                }} />}
-                                        <ItemButton text={'Add to Cart'}
-                                            getAllProducts={getUpdatedData}
-                                            data={data}
-                                        />
-                                    </div>
-                                </div>
-                            </Card>
-                        )
-                    })}
+                                </Card>
+                            )
+                        })}
 
+                    </div>
+                    <h6>Total MRP Price ( {subQuantityTotal} items ): {subtotal} </h6>
+                    {!anchorElWishList &&
+                        <>
+                            <h6>Discount: 100 </h6>
+                            <h6>Total Amount: {subtotal + 100} </h6>
+                            <p style={{ fontSize: "12px", color: "#7aba69" }}>FREEJERSEY promo code ( ₹0 off ) applied.
+                            </p>
+                        </>
+                    }
+                    <div>
+                        <i class="fa fa-close samllclose "
+                            onClick={() => setAnchorEl(false)}
+                            style={{ position: "absolute", top: 2, right: 10, fontSize: 23, cursor: "pointer", }}
+                        ></i></div>
                 </div>
             ) : (
                 <div style={{ position: "relative", width: "20vw", height: "10vh" }}>
@@ -78,20 +93,7 @@ const CartData = ({ getData, setAnchorEl, anchorElWishList }) => {
                 </div>
             )
             }
-            <th>Total MRP Price ( {subQuantityTotal} items ): {subtotal} </th>
-            {!anchorElWishList &&
-                <>
-                    <th>Discount: 100 </th>
-                    <th>Total Amount: {subtotal + 100} </th>
-                    <p style={{ fontSize: "12px", color: "#7aba69" }}>FREEJERSEY promo code ( ₹0 off ) applied.
-                    </p>
-                </>
-            }
-            <div>
-                <i class="fa fa-close samllclose "
-                    onClick={() => setAnchorEl(false)}
-                    style={{ position: "absolute", top: 2, right: 10, fontSize: 23, cursor: "pointer", }}
-                ></i></div>
+
         </Card>
     )
 }
