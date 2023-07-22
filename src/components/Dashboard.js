@@ -11,15 +11,18 @@ import axios from 'axios'
 
 const Dashboard = () => {
   const [getAllProducts, setGetAllProducts] = useState();
+  const [filterData, setFilterData] = useState();
+
   const getUpdatedData = useSelector((state) => state.getProductData.getProductDetails)
   const searchData = useSelector((state) => state.getProductData.searchData)
   const dispatch = useDispatch()
-
-  const getProductData= async()=>{
+  const sortComparator = (a, b) => a?.platform?.localeCompare(b.platform);
+  const inverseSortComparator = (a, b) => sortComparator(b, a);
+  const getProductData = async () => {
     try {
       const response = await axios.get('https://fakestoreapi.com/products')
-      let data = response.data.map((ele)=>{
-        return {...ele, isChecked:false,producQuantity:0 }
+      let data = response.data.map((ele) => {
+        return { ...ele, isChecked: false, producQuantity: 0 }
       })
       setGetAllProducts(data)
     } catch (error) {
@@ -35,9 +38,9 @@ const Dashboard = () => {
     return getAllProducts?.slice(frstPgae, lastPage);
   }, [currentPage, getAllProducts, PageSize]);
 
-  useEffect(()=>{
+  useEffect(() => {
     getProductData()
-  },[])
+  }, [])
   useEffect(() => {
     if (getUpdatedData?.length > 0) {
       setGetAllProducts(getUpdatedData)
@@ -51,27 +54,50 @@ const Dashboard = () => {
     dispatch(addCartData(updatedArray))
   }
 
-  let filterData = checkLastPage?.filter((item) => {
-    if (item?.title?.toLowerCase()
-      .includes(searchData.toLowerCase())) { return item; }
-  })
+  useEffect(() => {
+    if (checkLastPage) {
+
+      let filter = checkLastPage?.filter((item) => {
+        if (item?.title?.toLowerCase()
+          .includes(searchData.toLowerCase())) { return item; }
+      })
+      setFilterData(filter)
+    }
+  }, [checkLastPage])
+  const onSortByPlatformAsc = () => {
+    const sortDaData = [...filterData].sort((a, b) => {
+      return a.title > b.title ? 1 : -1
+    })
+    setFilterData(sortDaData);
+  };
+
+  const onSortByPlatformDesc = () => {
+    const sortDaData = [...filterData].sort((a, b) => {
+      return a.title < b.title ? 1 : -1
+    })
+    setFilterData(sortDaData);
+  };
+  console.log("filterData", filterData);
   return (
     <>
       <div className="container mt-3">
         <h2 className="text-center">Products </h2>
       </div>
       <div className="row d-flex justify-content-center align-item-center">
+        <div onClick={onSortByPlatformAsc}>Assending</div>
+        <div onClick={onSortByPlatformDesc}>desending</div>
+
         {filterData?.length > 0 ? (<>
           {filterData?.map((data, index) => {
             return (
               <>
                 <Card className="card" style={{ width: '18rem', margin: "5px" }} >
-                  <img className="card-img-top" style={{marginTop:"5px"}} src={data.image}
+                  <img className="card-img-top" style={{ marginTop: "5px" }} src={data.image}
                     height="150"
                     width="150"
                     alt="Card image cap" />
                   <div className="card-body">
-                    <h6 className="card-title">{data?.title?.slice(0,28)}</h6>
+                    <h6 className="card-title">{data?.title?.slice(0, 28)}</h6>
                     <p className="card-text">Price: ₹ {data.price}</p>
                     <i
                       class="fa-solid fa-heart"

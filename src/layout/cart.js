@@ -66,7 +66,7 @@ const CartData = ({ getData, setAnchorEl, anchorElWishList }) => {
                     {!anchorElWishList &&
                         <>
                             <h6>Discount: 100 </h6>
-                            <h6>Total Amount: {subtotal + 100} </h6>
+                            <h6>Total Amount: {subtotal -100} </h6>
                             <p style={{ fontSize: "12px", color: "#7aba69" }}>FREEJERSEY promo code ( ₹0 off ) applied.
                             </p>
                         </>

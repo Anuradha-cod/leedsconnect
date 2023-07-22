@@ -6,12 +6,33 @@ import Dashboard from './components/Dashboard'
 
 function App() {
   return (
-    <>
-      <Header />
+    <div>
+    {/*
+  
+    <header>header</header>
+      <section>
+        <nav>
+          <ul>1</ul>
+          <ul>1</ul>
+          <ul>1</ul>
+
+        </nav>
+        <article>
+          <h1>article</h1>
+          <p>description</p>
+        </article>
+      </section>
+      <footer>
+      footer
+      </footer>
+  */}
+    
+  <Header />
+    
       <Routes>
         <Route path='/' element={<Dashboard />} />
       </Routes>
-    </>
+    </div>
   );
 }
 

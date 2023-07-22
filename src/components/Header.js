@@ -19,9 +19,8 @@ const Header = () => {
   }, [getUpdatedData])
   return (
     <>
-      <div>
-      </div>
-      <Navbar bg="dark" variant="dark">
+    
+      <Navbar bg="dark" variant="dark" style={{height:"10vh", width:"100%"}}>
         <Container>
           <Nav className="me-auto">
             <Nav.Link to="/" className="text-decoration-none text-light">
